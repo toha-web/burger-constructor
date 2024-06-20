@@ -87,7 +87,8 @@ function callBack(){
     input.placeholder = "+38 (0____) __________";
 
     const mask = IMask(input, {
-        mask: "+38 (\\000) 000 00 00"
+        mask: "+38 (\\000) 000 00 00",
+        // lazy: false
     });
 
     const submit = document.createElement("button");

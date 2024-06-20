@@ -615,25 +615,25 @@ section {
 .anim-burger .em1 {
   z-index: 1;
   width: 6%;
-  top: calc(50% + 1vw);
+  top: 50%;
   left: 86%;
 }
 .anim-burger .em2 {
   z-index: 1;
   width: 5%;
-  top: calc(50% - 6vw);
+  top: 30%;
   left: 20%;
 }
 .anim-burger .em3 {
   z-index: 1;
   width: 8%;
-  top: calc(50% + 10vw);
+  top: 80%;
   left: 25%;
 }
 .anim-burger .em4 {
   z-index: 1;
   width: 7%;
-  top: calc(50% - 8vw);
+  top: 30%;
   left: 80%;
 }
 

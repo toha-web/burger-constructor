@@ -575,8 +575,8 @@ section {
                 position: relative;
                 left: 30%;
                 width: 80%;
-                animation: appear 0.2s ease-in-out forwards;
-                // transform: translateX(-30%);
+                animation: appear 0.2s ease-in-out;
+                transform: translateX(-30%);
                 img{
                     width: 100%;
                     height: 100%;
@@ -1137,9 +1137,12 @@ input{
 
 @keyframes appear {
     0%{
-        transform: translate(-30%, max(-30vw, -30vh));
+        opacity: 0;
+    }
+    90%{
+        opacity: 0;
     }
     100%{
-        transform: translate(-30%, 0);
+        opacity: 1;
     }
 }

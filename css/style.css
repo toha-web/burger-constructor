@@ -772,8 +772,11 @@ section {
   position: relative;
   left: 30%;
   width: 80%;
-  -webkit-animation: appear 0.2s ease-in-out forwards;
-          animation: appear 0.2s ease-in-out forwards;
+  -webkit-animation: appear 0.2s ease-in-out;
+          animation: appear 0.2s ease-in-out;
+  -webkit-transform: translateX(-30%);
+      -ms-transform: translateX(-30%);
+          transform: translateX(-30%);
 }
 .result .constructor-burger .constructor-ingridients .constructor-ingridient img {
   width: 100%;
@@ -1520,22 +1523,24 @@ input {
 
 @-webkit-keyframes appear {
   0% {
-    -webkit-transform: translate(-30%, max(-30vw, -30vh));
-            transform: translate(-30%, max(-30vw, -30vh));
+    opacity: 0;
+  }
+  90% {
+    opacity: 0;
   }
   100% {
-    -webkit-transform: translate(-30%, 0);
-            transform: translate(-30%, 0);
+    opacity: 1;
   }
 }
 
 @keyframes appear {
   0% {
-    -webkit-transform: translate(-30%, max(-30vw, -30vh));
-            transform: translate(-30%, max(-30vw, -30vh));
+    opacity: 0;
+  }
+  90% {
+    opacity: 0;
   }
   100% {
-    -webkit-transform: translate(-30%, 0);
-            transform: translate(-30%, 0);
+    opacity: 1;
   }
 }

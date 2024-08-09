@@ -66,7 +66,7 @@ export function burgerConstructor(){
             zIndex ++;
             counter.innerText = ingridient.quantity;
             burger.unshift(ingridient);
-            addIngridient(ingridient, zIndex);
+            addIngridient(ingridient, zIndex, ingridientImage);
             countSummary(burger);
         });
 
@@ -75,7 +75,7 @@ export function burgerConstructor(){
             zIndex ++;
             counter.innerText = ingridient.quantity;
             burger.unshift(ingridient);
-            addIngridient(ingridient, zIndex);
+            addIngridient(ingridient, zIndex, ingridientImage);
             countSummary(burger);
         })
     });
@@ -86,8 +86,9 @@ function findIngridient(name){
     return ingridients.find(item => item.name.toLocaleLowerCase() === name.toLowerCase());
 }
 
-function addIngridient(ingridient, zIndex){
+function addIngridient(ingridient, zIndex, currentContainer){ 
     const burgerContainer = document.querySelector("#constructor .constructor-ingridients");
+    let changeSrc = false;
 
     const ingridientContainer = document.createElement("div");
     ingridientContainer.className = "constructor-ingridient";
@@ -100,15 +101,23 @@ function addIngridient(ingridient, zIndex){
 
     if(burgerContainer.firstElementChild){
         if(burgerContainer.firstElementChild.innerHTML.includes("top-bun")){
-            burgerContainer.firstElementChild.firstElementChild.src = "./images/ingridients/bun.png"
+            burgerContainer.firstElementChild.firstElementChild.src = "./images/ingridients/bun.png";
+            changeSrc = true; 
         }
     }
-    
+
     ingridientContainer.append(ingridientImage);
     burgerContainer.prepend(ingridientContainer);
 
     ingridientImage.addEventListener("load", () => {
         countHeight();
+        if(ingridient.name !== "bottom-bun" && ingridient.name !== "bun"){
+            animateIngridient(currentContainer, ingridient, ingridientContainer);
+        }
+        else if(ingridient.name === "bun" && !changeSrc){ 
+            animateIngridient(currentContainer, ingridient, ingridientContainer);
+        }
+        changeSrc = true;
     })
 }
 
@@ -184,7 +193,7 @@ function deleteIngridient(ingridient){
 
     const deletedIngridient = burgerChildren.find(item => item.getAttribute("name") === ingridient.name);
 
-    deletedIngridient.style.transition = "all 0.15s";
+    deletedIngridient.style.transition = "all 0.2s";
     deletedIngridient.style.opacity = 0;
 
     setTimeout(() => {
@@ -236,4 +245,64 @@ function orderBurger(){
     orderBtn.classList.remove("active");
     orderBtn.disabled = true;
     openModal(orderContainer, true);
+}
+
+function animateIngridient(currentContainer, ingridient, targetContainer) {
+    const startTop = currentContainer.getBoundingClientRect().top + window.scrollY;
+    const startLeft = currentContainer.getBoundingClientRect().left + window.scrollX;
+    const startWidth = currentContainer.getBoundingClientRect().width;
+
+    const targetTop = targetContainer.getBoundingClientRect().top + window.scrollY;
+    const targetLeft = targetContainer.getBoundingClientRect().left + window.scrollX;
+    const targetWidth = targetContainer.getBoundingClientRect().width;
+
+    let x = startLeft + (startWidth / 100) * 5;
+    let y = startTop;
+    let width = startWidth / 100 * 90;
+
+    const animateImage = document.createElement("img");
+    animateImage.src = `${ingridient.image}`;
+    animateImage.style.position = "absolute";
+    animateImage.style.top = `${y}px`;
+    animateImage.style.left = `${x}px`;
+    animateImage.style.width = `${width}px`;
+    animateImage.style.objectFit = "contain";
+    animateImage.style.zIndex = 99;
+
+    const dx = targetLeft - startLeft;
+    const dy = targetTop - startTop;
+    const dw = targetWidth - startWidth;
+    const duration = 0.2;
+
+    let counter = 0;
+    let time1 = null;
+    function animate(time2){
+        if(!time1) time1 = time2;
+        const deltaTime = time2 - time1;
+        time1 = time2;
+        const fps = 1000 / deltaTime;
+        
+        const stepX = dx / (fps * duration);
+        const stepY = dy / (fps * duration);
+        const stepWidth = dw / (fps * duration);
+
+        y += stepY;
+        x += stepX;
+        width += stepWidth;
+
+        animateImage.style.top = `${y}px`;
+        animateImage.style.left = `${x}px`;
+        animateImage.style.width = `${width}px`;
+
+        counter++;
+        if (counter < (fps * duration)) {
+            requestAnimationFrame(animate);
+        }
+        else{
+            document.body.removeChild(animateImage);
+        }
+    }
+
+    document.body.append(animateImage);
+    requestAnimationFrame(animate);
 }

@@ -267,6 +267,7 @@ function animateIngridient(currentContainer, ingridient, targetContainer) {
     animateImage.style.left = `${x}px`;
     animateImage.style.width = `${width}px`;
     animateImage.style.objectFit = "contain";
+    animateImage.style.transition = "opacity 0.3s"
     animateImage.style.zIndex = 99;
 
     const dx = targetLeft - startLeft;
@@ -299,7 +300,8 @@ function animateIngridient(currentContainer, ingridient, targetContainer) {
             requestAnimationFrame(animate);
         }
         else{
-            document.body.removeChild(animateImage);
+            animateImage.style.opacity = 0;
+            setTimeout(() => {document.body.removeChild(animateImage)}, 300);
         }
     }
 

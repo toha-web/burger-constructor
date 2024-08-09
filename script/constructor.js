@@ -1,5 +1,6 @@
 import ingridients from "./constructor-ingridients.js";
 import {openModal} from "./main.js";
+let full = false;
 
 function addIngridientsInfo(card, ingridient) {
     const [...cardItems] = card.children;
@@ -62,6 +63,7 @@ export function burgerConstructor(){
 
         const incrementBtn = cardCounter.find(item => item.classList.contains("increment-btn"));
         incrementBtn.addEventListener("click", () => {
+            if(full) return;
             ingridient.quantity ++;
             zIndex ++;
             counter.innerText = ingridient.quantity;
@@ -71,6 +73,7 @@ export function burgerConstructor(){
         });
 
         ingridientImage.addEventListener("click", () => {
+            if(full) return;
             ingridient.quantity ++;
             zIndex ++;
             counter.innerText = ingridient.quantity;
@@ -92,6 +95,7 @@ function addIngridient(ingridient, zIndex, currentContainer){
 
     const ingridientContainer = document.createElement("div");
     ingridientContainer.className = "constructor-ingridient";
+    ingridientContainer.classList.add("appear");
     ingridientContainer.style.zIndex = zIndex;
     ingridientContainer.style.marginBottom = `-${ingridient.margin}%`
     ingridientContainer.setAttribute("name", `${ingridient.name}`);
@@ -112,10 +116,10 @@ function addIngridient(ingridient, zIndex, currentContainer){
     ingridientImage.addEventListener("load", () => {
         countHeight();
         if(ingridient.name !== "bottom-bun" && ingridient.name !== "bun"){
-            animateIngridient(currentContainer, ingridient, ingridientContainer);
+            animateIngridient(currentContainer, ingridient.image, ingridientContainer);
         }
         else if(ingridient.name === "bun" && !changeSrc){ 
-            animateIngridient(currentContainer, ingridient, ingridientContainer);
+            animateIngridient(currentContainer, ingridient.image, ingridientContainer);
         }
         changeSrc = true;
     })
@@ -181,9 +185,11 @@ function countHeight(){
     
     if(childrenHeight > maxHeight + 30){
         sureLabel.style.display = "block";
+        full = true;
     }
     else{
         sureLabel.style.display = "none";
+        full = false;
     }
 }
 
@@ -193,8 +199,8 @@ function deleteIngridient(ingridient){
 
     const deletedIngridient = burgerChildren.find(item => item.getAttribute("name") === ingridient.name);
 
-    deletedIngridient.style.transition = "all 0.2s";
-    deletedIngridient.style.opacity = 0;
+    deletedIngridient.classList.remove("appear");
+    deletedIngridient.classList.add("disappear");
 
     setTimeout(() => {
         burgerContainer.removeChild(deletedIngridient);
@@ -247,7 +253,7 @@ function orderBurger(){
     openModal(orderContainer, true);
 }
 
-function animateIngridient(currentContainer, ingridient, targetContainer) {
+function animateIngridient(currentContainer, ingridientImg, targetContainer) {
     const startTop = currentContainer.getBoundingClientRect().top + window.scrollY;
     const startLeft = currentContainer.getBoundingClientRect().left + window.scrollX;
     const startWidth = currentContainer.getBoundingClientRect().width;
@@ -261,14 +267,14 @@ function animateIngridient(currentContainer, ingridient, targetContainer) {
     let width = startWidth / 100 * 90;
 
     const animateImage = document.createElement("img");
-    animateImage.src = `${ingridient.image}`;
+    animateImage.src = `${ingridientImg}`;
     animateImage.style.position = "absolute";
     animateImage.style.top = `${y}px`;
     animateImage.style.left = `${x}px`;
     animateImage.style.width = `${width}px`;
     animateImage.style.objectFit = "contain";
-    animateImage.style.transition = "opacity 0.3s"
-    animateImage.style.zIndex = 99;
+    animateImage.style.zIndex = 50;
+    animateImage.classList.add("disappear");
 
     const dx = targetLeft - startLeft;
     const dy = targetTop - startTop;
@@ -300,8 +306,7 @@ function animateIngridient(currentContainer, ingridient, targetContainer) {
             requestAnimationFrame(animate);
         }
         else{
-            animateImage.style.opacity = 0;
-            setTimeout(() => {document.body.removeChild(animateImage)}, 300);
+            document.body.removeChild(animateImage);
         }
     }
 

@@ -575,7 +575,7 @@ section {
                 position: relative;
                 left: 30%;
                 width: 80%;
-                animation: appear 0.2s ease-in-out;
+                opacity: 0;
                 transform: translateX(-30%);
                 img{
                     width: 100%;
@@ -1135,14 +1135,30 @@ input{
     }
 }
 
+.appear{
+    animation: appear 0.15s ease-in-out 0.1s forwards;
+}
+
+.disappear{
+    animation: disappear 0.2s ease-in-out forwards;
+}
+
 @keyframes appear {
     0%{
         opacity: 0;
     }
-    90%{
+    50%{
         opacity: 0;
     }
     100%{
         opacity: 1;
+    }
+}
+@keyframes disappear {
+    from{
+        opacity: 1;
+    }
+    to{
+        opacity: 0;
     }
 }

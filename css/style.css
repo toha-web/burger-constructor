@@ -772,8 +772,7 @@ section {
   position: relative;
   left: 30%;
   width: 80%;
-  -webkit-animation: appear 0.2s ease-in-out;
-          animation: appear 0.2s ease-in-out;
+  opacity: 0;
   -webkit-transform: translateX(-30%);
       -ms-transform: translateX(-30%);
           transform: translateX(-30%);
@@ -1521,11 +1520,21 @@ input {
      object-fit: contain;
 }
 
+.appear {
+  -webkit-animation: appear 0.15s ease-in-out 0.1s forwards;
+          animation: appear 0.15s ease-in-out 0.1s forwards;
+}
+
+.disappear {
+  -webkit-animation: disappear 0.2s ease-in-out forwards;
+          animation: disappear 0.2s ease-in-out forwards;
+}
+
 @-webkit-keyframes appear {
   0% {
     opacity: 0;
   }
-  90% {
+  50% {
     opacity: 0;
   }
   100% {
@@ -1537,10 +1546,26 @@ input {
   0% {
     opacity: 0;
   }
-  90% {
+  50% {
     opacity: 0;
   }
   100% {
     opacity: 1;
+  }
+}
+@-webkit-keyframes disappear {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes disappear {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }
